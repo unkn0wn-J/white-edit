@@ -844,3 +844,8 @@ header{
     text-align: center !important;
   }
 }
+@media (max-width: 768px){
+  .scroll-nav{
+    display: none !important;
+  }
+}

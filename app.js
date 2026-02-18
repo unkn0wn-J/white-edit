@@ -290,6 +290,11 @@ function getCurrentIndex(container, sections) {
 }
 
 function updateScrollNav() {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+  scrollNav.classList.remove('show');
+  return;
+}
+
   const ctx = getActiveSnapContext();
   if (!ctx || !ctx.container || ctx.sections.length === 0) {
     scrollNav.classList.remove('show');
