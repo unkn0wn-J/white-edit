@@ -74,13 +74,12 @@
 
 function showPage(pageId, push = true) {
 
-    document.body.classList.toggle('no-scroll', pageId !== 'home', '');
 
-    // 존재하는 섹션인지 체크 (오타 방지)
+    document.body.classList.toggle('no-scroll', pageId !== 'home');
+
     const activeSection = document.getElementById(pageId);
     if (!activeSection) return;
 
-    // 섹션/메뉴 active 처리
     document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
     document.querySelectorAll('.nav-menu li a').forEach(link => link.classList.remove('active'));
 
@@ -89,26 +88,19 @@ function showPage(pageId, push = true) {
     const activeLink = document.getElementById('link-' + pageId);
     if (activeLink) activeLink.classList.add('active');
 
-    // 로고(홈이 아닐 때 어둡게)
     const logo = document.querySelector('.header-left');
-    if (logo) {
-        logo.classList.toggle('not-home', pageId !== 'home');
-    }
+    if (logo) logo.classList.toggle('not-home', pageId !== 'home');
 
-    // 모바일 메뉴 닫기 + 맨 위로
     if (typeof navMenu !== "undefined" && navMenu) navMenu.classList.remove('active');
     activeSection.scrollTop = 0;
 
-    // 섹션 진입 애니메이션 리셋
     activeSection.style.animation = 'none';
     activeSection.offsetHeight;
     activeSection.style.animation = 'slideIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
 
-    // 홈 히어로 애니메이션(기존 유지)
-    // 홈 히어로 애니메이션 + 홈 스냅 위치 리셋(마지막 위치 유지 X)
     if (pageId === 'home') {
         const hs = document.getElementById('home-scroll');
-        if (hs) hs.scrollTop = 0;  // ✅ 항상 섹션1로
+        if (hs) hs.scrollTop = 0;
 
         const heroContent = document.querySelector('.hero-content');
         if (heroContent) {
@@ -118,13 +110,12 @@ function showPage(pageId, push = true) {
         }
     }
 
-    // ✅ history 스택 쌓기 (뒤로/앞으로 지원)
-    if (push) {
-        history.pushState({ pageId }, '', `#${pageId}`);
-    }
-    updateScrollNav();
+    if (push) history.pushState({ pageId }, '', `#${pageId}`);
 
+    if (typeof updateScrollNav === "function") updateScrollNav();
+    if (pageId === 'project' && typeof window.renderProjects === "function") window.renderProjects();
 }
+
 
 // 뒤로/앞으로 버튼 눌렀을 때: 해시 기반으로 섹션 복원
 window.addEventListener('popstate', () => {
