@@ -226,10 +226,17 @@ function scrollAboutToSection(deltaY) {
 
 if (aboutScroll) {
   aboutScroll.addEventListener('wheel', (e) => {
+
+    // ✅ 1. 모바일이면 그냥 통과 (기본 스크롤 허용)
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      return;
+    }
+
+    // ✅ 2. about 페이지 아닐 때도 통과
     const aboutActive = document.getElementById('about')?.classList.contains('active');
     if (!aboutActive) return;
 
-    // 홈 스크롤이랑 동일하게: 기본 스크롤 막고 섹션 이동만
+    // 🔥 여기부터 데스크톱 전용 스냅 로직
     e.preventDefault();
 
     if (aboutWheelLock) return;
@@ -238,8 +245,10 @@ if (aboutScroll) {
     scrollAboutToSection(e.deltaY);
 
     setTimeout(() => { aboutWheelLock = false; }, 700);
+
   }, { passive: false });
 }
+
 // ===== 하단 스크롤 네비 (HOME/ABOUT 공용) =====
 const scrollNav = document.getElementById('scroll-nav');
 const btnUp = document.getElementById('scroll-up');
