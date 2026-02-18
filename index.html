@@ -1,379 +1,462 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>White VALORANT</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* (CSS 부분은 위에 따로 분리됨) */
-    </style>
-</head>
-<body>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>White VALORANT</title>
 
-    <div id="start-overlay" onclick="startSite()">
-        <div class="overlay-icon-box"><i class="fa-solid fa-play"></i></div>
-        <h1>WHITE EDIT & FEEDBACK</h1>
-        <p>매드무비 제작 & 랭크 상승 피드백<br>화면을 클릭하여 입장하기</p>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div id="start-overlay" onclick="startSite()">
+    <div class="overlay-icon-box"><i class="fa-solid fa-play"></i></div>
+    <h1>WHITE EDIT & FEEDBACK</h1>
+    <p>매드무비 제작 & 랭크 상승 피드백<br />화면을 클릭하여 입장하기</p>
+  </div>
+
+  <audio id="bgm" src="music.mp3" loop></audio>
+
+  <header>
+    <a class="header-left" onclick="showPage('home')">
+      <i class="fa-solid fa-layer-group logo-icon"></i>
+      <div class="logo-text">White <span>EDIT</span></div>
+    </a>
+
+    <div class="header-center">
+      <div class="music-player">
+        <div class="album-art">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+
+        <div class="track-info">
+          <div class="track-title">Fall into Place - Highlight BGM</div>
+          <div class="player-controls">
+            <button class="play-btn" id="playToggleBtn"><i class="fa-solid fa-play"></i></button>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <span class="time" id="timeDisplay">00:00</span>
+          </div>
+        </div>
+
+        <div class="volume-control">
+          <i class="fa-solid fa-volume-high volume-icon" id="volIcon"></i>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.3" />
+        </div>
+      </div>
     </div>
 
-    <audio id="bgm" src="music.mp3" loop></audio>
+    <div class="header-right">
+      <div class="mobile-menu-btn" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+      </div>
 
-    <header>
-        <div class="header-left"><i class="fa-solid fa-layer-group logo-icon"></i><div class="logo-text">White <span>EDIT</span></div></div>
-        <div class="header-center">
-            <div class="music-player">
-                <div class="album-art">
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                </div>
-                <div class="track-info">
-                    <div class="track-title">Fall into Place - Highlight BGM</div>
-                    <div class="player-controls">
-                        <button class="play-btn" id="playToggleBtn"><i class="fa-solid fa-play"></i></button>
-                        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                        <span class="time" id="timeDisplay">00:00</span>
-                    </div>
-                </div>
-                <div class="volume-control">
-                    <i class="fa-solid fa-volume-high volume-icon" id="volIcon"></i>
-                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.3">
-                </div>
-            </div>
-        </div>
-        <div class="header-right">
-            <div class="mobile-menu-btn" onclick="toggleMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li style="align-self: flex-end; display: none;" class="mobile-close">
-                    <i class="fa-solid fa-xmark" style="font-size: 1.5rem; cursor: pointer;" onclick="toggleMenu()"></i>
-                </li>
-                <li><a onclick="showPage('home')" id="link-home" class="active">홈</a></li>
-                <li><a onclick="showPage('about')" id="link-about">소개</a></li>
-                <li><a onclick="showPage('project')" id="link-project">프로젝트</a></li>
-                <li><a onclick="showPage('madmovie')" id="link-madmovie">매드무비</a></li>
-                <li><a onclick="showPage('feedback')" id="link-feedback">피드백</a></li>
-                <li><a onclick="showPage('contact')" id="link-contact">문의</a></li>
+      <ul class="nav-menu" id="navMenu">
+        <li style="align-self: flex-end; display: none" class="mobile-close">
+          <i class="fa-solid fa-xmark" style="font-size: 1.5rem; cursor: pointer" onclick="toggleMenu()"></i>
+        </li>
+        <li><a onclick="showPage('home')" id="link-home" class="active">홈</a></li>
+        <li><a onclick="showPage('about')" id="link-about">소개</a></li>
+        <li><a onclick="showPage('project')" id="link-project">프로젝트</a></li>
+        <li><a onclick="showPage('madmovie')" id="link-madmovie">매드무비</a></li>
+        <li><a onclick="showPage('feedback')" id="link-feedback">피드백</a></li>
+        <li><a onclick="showPage('contact')" id="link-contact">문의</a></li>
+      </ul>
+    </div>
+  </header>
 
-            </ul>
-        </div>
-    </header>
-
-    <section id="home" class="page-section active">
+  <!-- HOME -->
+  <section id="home" class="page-section active">
+    <div id="home-scroll">
+      <!-- 1) HERO -->
+      <section class="home-snap" id="home-s1">
 
         <div class="hero-video-container">
-            <div class="video-background">
-                <iframe
-                    src="https://www.youtube.com/embed/PxEkyT4Ncfs?autoplay=1&mute=1&controls=0&loop=1&playlist=PxEkyT4Ncfs&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+          <div class="video-background">
+            <iframe
+              src="https://www.youtube.com/embed/PxEkyT4Ncfs?autoplay=1&mute=1&controls=0&loop=1&playlist=PxEkyT4Ncfs&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+
+          <div class="hero-overlay"></div>
+
+          <div class="hero-content animate">
+            <h1 class="hero-title">찾아와주셔서<br />감사합니다.</h1>
+            <p class="hero-subtitle">자신만의 매드무비를 가져보세요!</p>
+            <p class="hero-sub-text">실력 상승을 위한 솔루션, 1:1 피드백은 100% 무료입니다!</p>
+
+            <div class="hero-donation">
+              <i class="fa-solid fa-hand-holding-heart"></i>
+              <span>
+                수익금의 일부는 <span class="donation-highlight">6.25 참전용사분들</span>과 도움이 필요한 이웃에게
+                <span class="donation-accent">기부</span>됩니다.
+              </span>
             </div>
-            <div class="hero-overlay"></div>
 
-            <div class="hero-content animate">
-                <h1 class="hero-title">찾아와주셔서<br>감사합니다.</h1>
-                <p class="hero-subtitle">자신만의 매드무비를 가져보세요!</p>
-
-                <p class="hero-sub-text">실력 상승을 위한 솔루션, 1:1 피드백은 100% 무료입니다!</p>
-
-                <div class="hero-donation">
-                    <i class="fa-solid fa-hand-holding-heart"></i>
-                    <span>수익금의 일부는 <span class="donation-highlight">6.25 참전용사분들</span>과 도움이 필요한 이웃에게 <span class="donation-accent">기부</span>됩니다.</span>
-                </div>
-
-                <div class="hero-buttons">
-                    <button class="btn-primary" onclick="showPage('project')">작업물 보기</button>
-                    <button class="btn-outline" onclick="showPage('madmovie')">매드무비 신청</button>
-                    <button class="btn-glass" onclick="showPage('feedback')">피드백 받기</button>
-
-                </div>
+            <div class="hero-buttons">
+              <button class="btn-primary" onclick="showPage('project')">작업물 보기</button>
+              <button class="btn-outline" onclick="showPage('madmovie')">매드무비 신청</button>
+              <button class="btn-glass" onclick="showPage('feedback')">피드백 받기</button>
             </div>
-        </div>
+            </div>
+          </div>
+      </section>
 
-        <div class="section-divider">
-            <svg class="wave-svg" viewBox="0 0 100 500" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <path d="M50 0C50 0 70 68.5 70 125C70 181.5 30 193.5 30 250C30 306.5 70 318.5 70 375C70 431.5 50 500 50 500"
-                      stroke="url(#paint0_linear)" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-                <defs>
-                    <linearGradient id="paint0_linear" x1="50" y1="0" x2="50" y2="500" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#00F2EA" stop-opacity="0"/>
-                        <stop offset="0.5" stop-color="#00F2EA"/>
-                        <stop offset="1" stop-color="#00F2EA" stop-opacity="0"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-        </div>
-
+      <!-- 2) INTRO -->
+      <section class="home-snap" id="home-s2">
         <div class="section-content">
-            <div class="home-intro-section">
-                <div class="intro-img">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop" alt="매드무비 작업 이미지">
-                </div>
-                <div class="intro-text">
-                    <h2>멋진 매드무비를 작업해<br>드리고 있습니다.</h2>
-                    <p>
-                        매우 저렴한 가격 <strong class="intro-highlight">20,000원</strong>에 작업을 해드리고 있습니다.<br>
-                        어지럽지 않고 깔끔한 매드무비 영상으로 BGM과 어울리게<br>
-                        최선을 다해 작업을 해드리고 있습니다.
-                    </p>
-                    <p style="margin-top: 15px;">
-                        작업한 영상, 기존에 만들었던 영상이 궁금하시면 아래 버튼을<br>
-                        클릭하여서 확인해보시기 바랍니다.
-                    </p>
-                    <p style="color: #888; font-size: 0.9rem; margin-top: 15px;">
-                        * 현재 매드무비 작업 비용 일부를 기부하는 프로젝트를 진행하고 있습니다.<br>
-                        <span style="color:var(--accent-color)">6.25 참전용사분들</span>과 도움이 필요한 이웃에게 기부됩니다.
-                    </p>
-                    <button class="intro-btn" onclick="showPage('project')">자세히 보기</button>
-                </div>
+          <div class="home-intro-section">
+            <div class="intro-img">
+              <img
+                src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop"
+                alt="매드무비 작업 이미지" />
             </div>
 
-            <div class="features-container">
-                <div class="section-header">
-                    <h2 class="section-title-styled">믿을 수 있는 <span class="gradient-text">작업</span></h2>
-                    <p class="section-subtitle">합리적인 가격과 최고의 퀄리티를 약속합니다.</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-item"><i class="fa-solid fa-coins feature-icon"></i><h3>합리적인 비용</h3><p>비용을 오버해서 받지 않습니다.<br>작업 시간과 양에 따라 정직하게 받습니다.</p></div>
-                    <div class="feature-item"><i class="fa-solid fa-comments feature-icon"></i><h3>간편 상담 상시 가능</h3><p>언제든지 연락주세요.<br>새벽 시간에는 답변이 조금 늦을 수 있습니다.</p></div>
-                    <div class="feature-item"><i class="fa-solid fa-ban feature-icon"></i><h3>추가 비용 X</h3><p>작업 도중 부당한 추가 비용을 요구하지 않습니다.<br>사전에 정확한 가격으로 진행합니다.</p></div>
-                    <div class="feature-item"><i class="fa-solid fa-bolt feature-icon"></i><h3>빠른 작업</h3><p>빠른 시일 내에 작업을 완료하여<br>퀄리티 있는 영상을 보내드립니다.</p></div>
-                </div>
+            <div class="intro-text">
+              <h2>멋진 매드무비를 작업해<br />드리고 있습니다.</h2>
+              <p>
+                매우 저렴한 가격 <strong class="intro-highlight">20,000원</strong>에 작업을 해드리고 있습니다.<br />
+                어지럽지 않고 깔끔한 매드무비 영상으로 BGM과 어울리게<br />
+                최선을 다해 작업을 해드리고 있습니다.
+              </p>
+              <p style="margin-top: 15px">
+                작업한 영상, 기존에 만들었던 영상이 궁금하시면 아래 버튼을<br />
+                클릭하여서 확인해보시기 바랍니다.
+              </p>
+              <p style="color: #888; font-size: 0.9rem; margin-top: 15px">
+                * 현재 매드무비 작업 비용 일부를 기부하는 프로젝트를 진행하고 있습니다.<br />
+                <span style="color: var(--accent-color)">6.25 참전용사분들</span>과 도움이 필요한 이웃에게 기부됩니다.
+              </p>
+              <button class="intro-btn" onclick="showPage('project')">자세히 보기</button>
             </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <section id="about" class="page-section">
+      <!-- 3) FEATURES -->
+      <section class="home-snap" id="home-s3">
         <div class="section-content">
+          <div class="features-container">
             <div class="section-header">
-                <h2 class="section-title-styled">About <span class="gradient-text">Editor</span></h2>
-                <p class="section-subtitle">감각적인 편집으로 당신의 플레이를 빛내드립니다.</p>
+              <h2 class="section-title-styled">믿을 수 있는 <span class="gradient-text">작업</span></h2>
+              <p class="section-subtitle">합리적인 가격과 최고의 퀄리티를 약속합니다.</p>
             </div>
-            <div class="profile-box">
-                <div class="profile-img"><i class="fa-solid fa-user-astronaut"></i></div>
-                <h2 style="margin-bottom:10px; color:#fff;">White</h2>
-                <p style="color:var(--accent-color); font-weight:bold; margin-bottom:30px; letter-spacing: 1px;">Professional Video Editor</p>
-                <p style="color:#ccc; line-height: 1.8; font-size: 1.1rem;">안녕하세요. 감각적인 컷 편집을 추구하는 <strong>White</strong>입니다.<br>브금에 맞게 그에 맞는 효과를 넣어 게임플레이가 더욱 돋보이게 만듭니다.<br>Adobe Premiere Pro를 주로 사용합니다.</p>
-            </div>
-            <div class="about-feature">
-                <h2>밋밋한 영상을 더 화려하게</h2>
-                <div class="about-desc">
-                    <p>과하지 않게 편집하여 보는 사람도 눈이 아프지 않고 편하게 볼 수 있도록 해드립니다.</p>
-                    <p>BGM에 맞게 최선을 다해 작업을 해드리며, 하이라이트에는 상황에 맞게 추가적인 효과음을 넣어 강조시킵니다.</p>
-                    <p>또한 과하지 않고 어색하지 않는 킬 효과와 화면전환을 넣어 자연스럽게 볼 수 있도록 합니다.</p>
-                </div>
-                <div class="compare-grid">
-                    <div class="compare-item">
-                        <a href="https://www.youtube.com/watch?v=FXEghQiNnmQ" target="_blank" class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/FXEghQiNnmQ/hqdefault.jpg" alt="썸네일">
-                            <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
-                        </a>
-                        <div class="compare-label">편집 예시 영상 1</div>
-                    </div>
-                    <div class="compare-item">
-                        <a href="https://www.youtube.com/watch?v=HT1PUiN0uQc" target="_blank" class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/HT1PUiN0uQc/hqdefault.jpg" alt="썸네일">
-                            <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
-                        </a>
-                        <div class="compare-label">편집 예시 영상 2</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="feedback" class="page-section">
+            <div class="features-grid">
+              <div class="feature-item">
+                <i class="fa-solid fa-coins feature-icon"></i>
+                <h3>합리적인 비용</h3>
+                <p>비용을 오버해서 받지 않습니다.<br />작업 시간과 양에 따라 정직하게 받습니다.</p>
+              </div>
+
+              <div class="feature-item">
+                <i class="fa-solid fa-comments feature-icon"></i>
+                <h3>간편 상담 상시 가능</h3>
+                <p>언제든지 연락주세요.<br />새벽 시간에는 답변이 조금 늦을 수 있습니다.</p>
+              </div>
+
+              <div class="feature-item">
+                <i class="fa-solid fa-ban feature-icon"></i>
+                <h3>추가 비용 X</h3>
+                <p>작업 도중 부당한 추가 비용을 요구하지 않습니다.<br />사전에 정확한 가격으로 진행합니다.</p>
+              </div>
+
+              <div class="feature-item">
+                <i class="fa-solid fa-bolt feature-icon"></i>
+                <h3>빠른 작업</h3>
+                <p>빠른 시일 내에 작업을 완료하여<br />퀄리티 있는 영상을 보내드립니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ABOUT (2섹션 스냅) -->
+  <section id="about" class="page-section">
+    <div id="about-scroll">
+      <!-- about 1 -->
+      <section class="about-snap" id="about-s1">
         <div class="section-content">
-            <div class="section-header">
-                <h2 class="section-title-styled">Gameplay <span class="gradient-text">Feedback</span></h2>
-                <p class="section-subtitle">티어를 올리는 가장 확실한 방법, 1:1 맞춤형 솔루션</p>
-                <p class="section-notice">모든 저의 피드백이 맞을 수 있고 다른 의견으로 아닐 수 있습니다.<br>이 점 반드시 참고해주시기 바랍니다.</p>
-            </div>
+          <div class="section-header">
+            <h2 class="section-title-styled">About <span class="gradient-text">Editor</span></h2>
+            <p class="section-subtitle">감각적인 편집으로 당신의 플레이를 빛내드립니다.</p>
+          </div>
 
-            <div class="feedback-grid">
-                <div class="feedback-card">
-                    <div class="feedback-icon-box"><i class="fa-solid fa-video"></i></div>
-                    <h3 class="feedback-title">VOD 피드백</h3>
-                    <p class="feedback-desc">녹화된 플레이 영상을 정밀 분석하여<br>습관적인 실수와 개선점을 찾아드립니다.</p>
-                    <div class="price-tag no-click">Feedback</div>
-                </div>
-                <div class="feedback-card">
-                    <div class="feedback-icon-box"><i class="fa-solid fa-headset"></i></div>
-                    <h3 class="feedback-title">실시간 코칭</h3>
-                    <p class="feedback-desc">디스코드 라이브를 통해 실시간으로<br>상황 판단과 오더 능력을 키워드립니다.</p>
-                    <div class="price-tag no-click">Live Coaching</div>
-                </div>
-                <div class="feedback-card">
-                    <div class="feedback-icon-box"><i class="fa-solid fa-crosshairs"></i></div>
-                    <h3 class="feedback-title">에임 & 셋업</h3>
-                    <p class="feedback-desc">요원별 스킬 활용법과 에임 루틴,<br>감도 설정 등 기초부터 탄탄하게.</p>
-                    <div class="price-tag no-click">Aim & Setup</div>
-                </div>
-            </div>
+          <div class="profile-box">
+            <div class="profile-img"><i class="fa-solid fa-user-astronaut"></i></div>
+            <h2 style="margin-bottom: 10px; color: #fff">White</h2>
+            <p style="color: var(--accent-color); font-weight: bold; margin-bottom: 30px; letter-spacing: 1px">
+              Professional Video Editor
+            </p>
+            <p style="color: #ccc; line-height: 1.8; font-size: 1.1rem">
+              안녕하세요. 감각적인 컷 편집을 추구하는 <strong>White</strong>입니다.<br />
+              브금에 맞게 그에 맞는 효과를 넣어 게임플레이가 더욱 돋보이게 만듭니다.<br />
+              Adobe Premiere Pro를 주로 사용합니다.
+            </p>
 
-            <div style="text-align: center; margin-top: 60px;">
-                <p style="color: #ccc; margin-bottom: 20px;">* 피드백은 현재 티어와 주 사용 요원을 기반으로 진행됩니다.</p>
-                <button class="btn-primary" onclick="openModal()">피드백 신청하기
-                </button>
-            </div>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <section id="madmovie" class="page-section">
+      <!-- about 2 -->
+      <section class="about-snap" id="about-s2">
         <div class="section-content">
-            <div class="section-header">
-                <h2 class="section-title-styled">Valorant <span class="gradient-text">Edit</span></h2>
-                <p class="section-subtitle">최고의 클립을, 감각적인 매드무비로 완성해드립니다.</p>
-                <p class="section-notice">원하는 BGM과 감각적인 영상 효과, 효과음을 더해 완성도 높은 매드무비로 제작해드립니다.</p>
+          <div class="about-feature">
+            <h2>밋밋한 영상을 더 화려하게</h2>
+
+            <div class="about-desc">
+              <p>과하지 않게 편집하여 보는 사람도 눈이 아프지 않고 편하게 볼 수 있도록 해드립니다.</p>
+              <p>BGM에 맞게 최선을 다해 작업을 해드리며, 하이라이트에는 상황에 맞게 추가적인 효과음을 넣어 강조시킵니다.</p>
+              <p>또한 과하지 않고 어색하지 않는 킬 효과와 화면전환을 넣어 자연스럽게 볼 수 있도록 합니다.</p>
             </div>
 
-            <div class="feedback-grid">
-                <div class="feedback-card">
-                    <div class="feedback-icon-box"><i class="fa-solid fa-video"></i></div>
-                    <h3 class="feedback-title">VOD</h3>
-                    <p class="feedback-desc">제공해주신 플레이 영상을 통해 <br>감각적인 매드무비 제작을 진행합니다.</p>
-                    <div class="price-tag no-click">Montage</div>
-                </div>
-                <div class="feedback-card">
-                    <div class="feedback-icon-box"><i class="fa-solid fa-headset"></i></div>
-                    <h3 class="feedback-title">BGM</h3>
-                    <p class="feedback-desc">선택하신 BGM에 맞춰 완성도 높은 매드무비로 제작해드립니다.<br>원하시는 BGM 이 없을 경우 임의로 제작합니다.</p>
-                    <div class="price-tag no-click">Montage</div>
+            <!-- ✅ compare-grid는 about-s2 안에 있어야 정상 -->
+            <div class="compare-grid">
+              <div class="compare-item">
+                <a href="https://www.youtube.com/watch?v=FXEghQiNnmQ" target="_blank" rel="noopener noreferrer" class="video-thumbnail">
+                  <img src="https://img.youtube.com/vi/FXEghQiNnmQ/hqdefault.jpg" alt="썸네일" />
+                  <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                </a>
+                <div class="compare-label">편집 예시 영상 1</div>
+              </div>
+
+              <div class="compare-item">
+                <a href="https://www.youtube.com/watch?v=HT1PUiN0uQc" target="_blank" rel="noopener noreferrer" class="video-thumbnail">
+                  <img src="https://img.youtube.com/vi/HT1PUiN0uQc/hqdefault.jpg" alt="썸네일" />
+                  <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                </a>
+                <div class="compare-label">편집 예시 영상 2</div>
+              </div>
             </div>
-            </div>
-            <div style="text-align: center; margin-top: 60px;">
-                <p style="color: #ccc; margin-bottom: 20px;">* 피드백은 현재 티어와 주 사용 요원을 기반으로 진행됩니다.</p>
-                <button class="btn-primary" onclick="openMadmovieModal()">매드무비 신청하기</button>
-                </button>
-            </div>
+          </div>
         </div>
-    </section>
+      </section>
+    </div>
+  </section>
 
-    <div id="feedback-modal" class="modal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2>피드백 준비 안내</h2>
-            </div>
-            <div class="modal-body">
-                <p style="margin-bottom:15px; font-weight:bold;">피드백을 위한 준비물이 있으십니다.</p>
-                <ul>
-                    <li>본인 <span class="modal-highlight">랭크게임 플레이 2판</span>을 준비하셔야 합니다.</li>
-                </ul>
+  <!-- FEEDBACK -->
+  <section id="feedback" class="page-section">
+    <div class="section-content">
+      <div class="section-header">
+        <h2 class="section-title-styled">Gameplay <span class="gradient-text">Feedback</span></h2>
+        <p class="section-subtitle">티어를 올리는 가장 확실한 방법, 1:1 맞춤형 솔루션</p>
+        <p class="section-notice">모든 저의 피드백이 맞을 수 있고 다른 의견으로 아닐 수 있습니다.<br />이 점 반드시 참고해주시기 바랍니다.</p>
+      </div>
 
-                <p style="margin-top:25px; margin-bottom:15px; font-weight:bold; color:var(--valo-red);">피드백이 불가능한 조건</p>
-                <ul>
-                    <li><span class="modal-highlight">영상 음성이 누락된 경우</span> 피드백이 어렵습니다.</li>
-                    <li><span class="modal-highlight">화질이 보기 어려울 정도로 낮거나 영상에 심한 끊김</span>이 있을 경우 피드백이 어렵습니다.</li>
-                    <li><span class="modal-highlight">일방적으로 승리한 경기</span>는 분석이 어려워 피드백이 제한될 수 있습니다. (예: 13:0, 13:3 등)</li>
-                </ul>
-
-                <p style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                준비가 다 되셨으면 본인 유튜브 채널에 영상을
-                <span style="color:var(--accent-color); font-weight:bold;">'일부 공개'</span>로 업로드하신 후, <br>
-                 생성된 <span style="color:var(--accent-color); font-weight:bold;">영상 링크</span>를 복사하여 전달해 주시면 됩니다.
-</p>
-<p style="margin-top: 15px; color: #ccc;">
-    <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord <span style="color:#fff; font-weight:bold;">hyukjin_03</span>
-</p>
-            </div>
-            <div style="margin-top:30px; overflow:hidden;">
-                <button class="modal-close-btn" onclick="closeModal(); setTimeout(() => showPage('contact'), 300);">확인했습니다</button>
-            </div>
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <div class="feedback-icon-box"><i class="fa-solid fa-video"></i></div>
+          <h3 class="feedback-title">VOD 피드백</h3>
+          <p class="feedback-desc">녹화된 플레이 영상을 정밀 분석하여<br />습관적인 실수와 개선점을 찾아드립니다.</p>
+          <div class="price-tag no-click">Feedback</div>
         </div>
+
+        <div class="feedback-card">
+          <div class="feedback-icon-box"><i class="fa-solid fa-headset"></i></div>
+          <h3 class="feedback-title">실시간 코칭</h3>
+          <p class="feedback-desc">디스코드 라이브를 통해 실시간으로<br />상황 판단과 오더 능력을 키워드립니다.</p>
+          <div class="price-tag no-click">Live Coaching</div>
+        </div>
+
+        <div class="feedback-card">
+          <div class="feedback-icon-box"><i class="fa-solid fa-crosshairs"></i></div>
+          <h3 class="feedback-title">에임 & 셋업</h3>
+          <p class="feedback-desc">요원별 스킬 활용법과 에임 루틴,<br />감도 설정 등 기초부터 탄탄하게.</p>
+          <div class="price-tag no-click">Aim & Setup</div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 60px">
+        <p style="color: #ccc; margin-bottom: 20px">* 피드백은 현재 티어와 주 사용 요원을 기반으로 진행됩니다.</p>
+        <button class="btn-primary" onclick="openModal()">피드백 신청하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MADMOVIE -->
+  <section id="madmovie" class="page-section">
+    <div class="section-content">
+      <div class="section-header">
+        <h2 class="section-title-styled">Valorant <span class="gradient-text">Edit</span></h2>
+        <p class="section-subtitle">최고의 클립을, 감각적인 매드무비로 완성해드립니다.</p>
+        <p class="section-notice">원하는 BGM과 감각적인 영상 효과, 효과음을 더해 완성도 높은 매드무비로 제작해드립니다.</p>
+      </div>
+
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <div class="feedback-icon-box"><i class="fa-solid fa-video"></i></div>
+          <h3 class="feedback-title">VOD</h3>
+          <p class="feedback-desc">제공해주신 플레이 영상을 통해 <br />감각적인 매드무비 제작을 진행합니다.</p>
+          <div class="price-tag no-click">Montage</div>
+        </div>
+
+        <div class="feedback-card">
+          <div class="feedback-icon-box"><i class="fa-solid fa-headset"></i></div>
+          <h3 class="feedback-title">BGM</h3>
+          <p class="feedback-desc">
+            선택하신 BGM에 맞춰 완성도 높은 매드무비로 제작해드립니다.<br />
+            원하시는 BGM이 없을 경우 임의로 제작합니다.
+          </p>
+          <div class="price-tag no-click">Montage</div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 60px">
+        <p style="color: #ccc; margin-bottom: 20px">* 매드무비는 제공해주신 VOD와 BGM을 기반으로 제작됩니다.</p>
+        <button class="btn-primary" onclick="openMadmovieModal()">매드무비 신청하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDBACK MODAL -->
+  <div id="feedback-modal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>피드백 준비 안내</h2>
+      </div>
+
+      <div class="modal-body">
+        <p style="margin-bottom: 15px; font-weight: bold">피드백을 위한 준비물이 있으십니다.</p>
+        <ul>
+          <li>본인 <span class="modal-highlight">랭크게임 플레이 2판</span>을 준비하셔야 합니다.</li>
+        </ul>
+
+        <p style="margin-top: 25px; margin-bottom: 15px; font-weight: bold; color: var(--valo-red)">피드백이 불가능한 조건</p>
+        <ul>
+          <li><span class="modal-highlight">영상 음성이 누락된 경우</span> 피드백이 어렵습니다.</li>
+          <li><span class="modal-highlight">화질이 보기 어려울 정도로 낮거나 영상에 심한 끊김</span>이 있을 경우 피드백이 어렵습니다.</li>
+          <li><span class="modal-highlight">일방적으로 승리한 경기</span>는 분석이 어려워 피드백이 제한될 수 있습니다. (예: 13:0, 13:3 등)</li>
+        </ul>
+
+        <p style="margin-top: 25px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px">
+          준비가 다 되셨으면 본인 유튜브 채널에 영상을 <span style="color: var(--accent-color); font-weight: bold">'일부 공개'</span>로 업로드하신 후,<br />
+          생성된 <span style="color: var(--accent-color); font-weight: bold">영상 링크</span>를 복사하여 전달해 주시면 됩니다.
+        </p>
+
+        <p style="margin-top: 15px; color: #ccc">
+          <i class="fa-brands fa-discord" style="color: #5865f2"></i> Discord
+          <span style="color: #fff; font-weight: bold">hyukjin_03</span>
+        </p>
+      </div>
+
+      <div style="margin-top: 30px; overflow: hidden">
+        <button class="modal-close-btn" onclick="closeModal(); setTimeout(() => showPage('contact'), 300);">확인했습니다</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MADMOVIE MODAL -->
+  <div id="madmovie-modal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>매드무비 준비 안내</h2>
+      </div>
+
+      <div class="modal-body">
+        <p style="margin-bottom: 15px; font-weight: bold">매드무비 제작을 위해 아래 준비 사항을 확인해 주세요.</p>
+        <ul>
+          <li>매드무비 완성도를 위해 <span class="modal-highlight">킬 클립 15~20개</span>를 권장드립니다.</li>
+        </ul>
+
+        <p style="margin-top: 25px; margin-bottom: 15px; font-weight: bold; color: var(--valo-red)">주의사항</p>
+        <ul>
+          <li><span class="modal-highlight">영상 음성이 누락된 경우</span> 매드무비 제작이 제한됩니다.</li>
+          <li><span class="modal-highlight">화질이 보기 어려울 정도로 낮거나 영상에 심한 끊김</span>이 있을 경우 제작이 어렵습니다.</li>
+          <li>분량의 전체 영상을 전달하실 경우, <span class="modal-highlight">별도의 추가 작업 비용</span>이 부과됩니다.</li>
+        </ul>
+
+        <p style="margin-top: 25px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px">
+          <span style="color: var(--accent-color); font-weight: bold">
+            영상 음성 또는 화질에 문제가 있는 상태에서도 작업은 가능하지만<br />
+            완성 후 결과에 대한 책임은 지지 않습니다.
+          </span>
+        </p>
+
+        <p style="margin-top: 15px; color: #ccc">
+          <i class="fa-brands fa-discord" style="color: #5865f2"></i> Discord
+          <span style="color: #fff; font-weight: bold">hyukjin_03</span>
+        </p>
+      </div>
+
+      <div style="margin-top: 30px; overflow: hidden">
+        <button class="modal-close-btn" onclick="closeMadmovieModal(); setTimeout(() => showPage('contact'), 300);">확인했습니다</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERT MODAL -->
+  <div id="alert-modal" class="modal">
+    <div class="modal-box" style="text-align: center; max-width: 400px">
+      <div class="modal-header">
+        <h2>알림</h2>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <p id="alert-msg">메시지 내용</p>
+      </div>
+      <div style="margin-top: 30px">
+        <button class="modal-close-btn" onclick="closeAlert()" style="float: none">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT -->
+  <section id="project" class="page-section">
+    <div class="section-content">
+      <div class="section-header">
+        <h2 class="section-title-styled">Latest <span class="gradient-text">Projects</span></h2>
+        <p class="section-subtitle">(Video gallery will appear here)</p>
+      </div>
+
+      <div class="video-grid" id="projectGrid"></div>
+
+      <div class="pager" id="projectPager"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="page-section">
+    <div class="section-content">
+      <div class="section-header">
+        <h2 class="section-title-styled">Contact <span class="gradient-text">Me</span></h2>
+        <p class="section-subtitle">작업 문의나 피드백 요청은 언제든 환영합니다.</p>
+      </div>
+
+      <div class="contact-box">
+        <h2 style="margin-bottom: 20px; color: #fff">매드무비 & 피드백</h2>
+        <p style="margin-bottom: 50px; color: #aaa; font-size: 1.1rem">매드무비 제작 및 발로란트 피드백 상담은 아래 채널로 문의 바랍니다.</p>
+
+        <a href="https://discord.gg/38qepD7At6" target="_blank" rel="noopener noreferrer" class="contact-btn btn-discord">
+          <i class="fa-brands fa-discord" style="font-size: 1.3rem"></i>Discord Send Message
+        </a>
+
+        <a href="https://open.kakao.com/o/shw6yWFf" target="_blank" rel="noopener noreferrer" class="contact-btn btn-email">
+          <i class="fa-solid fa-comment"></i>
+          Kakao Open Chat
+        </a>
+      </div>
+    </div>
+  </section>
+    <!-- 하단 스크롤 네비 (HOME/ABOUT 공용) -->
+    <div id="scroll-nav" class="scroll-nav" aria-hidden="true">
+      <button type="button" id="scroll-up" class="scroll-btn" aria-label="위로 이동">
+        <i class="fa-solid fa-chevron-up"></i>
+        <span>Up</span>
+      </button>
+
+      <button type="button" id="scroll-down" class="scroll-btn" aria-label="아래로 이동">
+        <i class="fa-solid fa-chevron-down"></i>
+        <span>Down</span>
+      </button>
     </div>
 
-        <div id="madmovie-modal" class="modal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2>매드무비 준비 안내</h2>
-            </div>
-            <div class="modal-body">
-                <p style="margin-bottom:15px; font-weight:bold;">매드무비 제작을 위해 아래 준비 사항을 확인해 주세요.</p>
-                <ul>
-                    <li>매드무비 완성도를 위해<span class="modal-highlight">킬 클립 15~20개</span>를 권장드립니다.</li>
-                </ul>
-
-                <p style="margin-top:25px; margin-bottom:15px; font-weight:bold; color:var(--valo-red);">주의사항</p>
-                <ul>
-                    <li><span class="modal-highlight">영상 음성이 누락된 경우</span> 매드무비 제작이 제한됩니다.</li>
-                    <li><span class="modal-highlight">화질이 보기 어려울 정도로 낮거나 영상에 심한 끊김</span>이 있을 경우 제작이 어렵습니다.</li>
-                    <li>분량의 전체 영상을 전달하실 경우, <span class="modal-highlight">별도의 추가 작업 비용</span>이 부과됩니다.</li>
-                </ul>
-
-                <p style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                <span style="color:var(--accent-color); font-weight:bold;">영상 음성 또는 화질에 문제가 있는 상태에서도 작업은 가능하지만<br> 완성 후 결과에 대한 책임은 지지 않습니다.</span></p>
-<p style="margin-top: 15px; color: #ccc;">
-    <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord <span style="color:#fff; font-weight:bold;">hyukjin_03</span>
-</p>
-            </div>
-            <div style="margin-top:30px; overflow:hidden;">
-                <button class="modal-close-btn" onclick="closeMadmovieModal(); setTimeout(() => showPage('contact'), 300);">확인했습니다</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="alert-modal" class="modal">
-        <div class="modal-box" style="text-align: center; max-width: 400px;">
-            <div class="modal-header">
-                <h2>알림</h2>
-            </div>
-            <div class="modal-body" style="text-align: center;">
-                <p id="alert-msg">메시지 내용</p>
-            </div>
-            <div style="margin-top:30px;">
-                <button class="modal-close-btn" onclick="closeAlert()" style="float:none;">확인</button>
-            </div>
-        </div>
-    </div>
-
-    <section id="project" class="page-section">
-        <div class="section-content">
-            <div class="section-header">
-                <h2 class="section-title-styled">Latest <span class="gradient-text">Projects</span></h2>
-                <p class="section-subtitle">(Video gallery will appear here)</p>
-            </div>
-            <div class="video-grid">
-                <div class="video-card"><a href="https://www.youtube.com/watch?v=FXEghQiNnmQ" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/FXEghQiNnmQ/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #1</h3><p>High Quality Montage</p></div></div>
-                <div class="video-card"><a href="https://www.youtube.com/watch?v=HT1PUiN0uQc" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/HT1PUiN0uQc/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #2</h3><p>Gameplay Highlight</p></div></div>
-                <div class="video-card"><a href="https://www.youtube.com/watch?v=PxEkyT4Ncfs" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/PxEkyT4Ncfs/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #3</h3><p>Creative Edit</p></div></div>
-                <div class="video-card"><a href="https://www.youtube.com/watch?v=yT4orJcI3Nk" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/yT4orJcI3Nk/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #4</h3><p>New Highlight 2024</p></div></div>
-                <div class="video-card"><a href="https://www.youtube.com/watch?v=PxEkyT4Ncfs" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/PxEkyT4Ncfs/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #5</h3><p>Special Clip</p></div></div>
-                <div class="video-card"><a href="https://www.youtube.com/watch?v=GQ3Athtgtlw" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/GQ3Athtgtlw/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #6</h3><p>Best Montage</p></div></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="page-section">
-        <div class="section-content">
-            <div class="section-header">
-                <h2 class="section-title-styled">Contact <span class="gradient-text">Me</span></h2>
-                <p class="section-subtitle">작업 문의나 피드백 요청은 언제든 환영합니다.</p>
-            </div>
-
-            <div class="contact-box">
-                <h2 style="margin-bottom:20px; color:#fff;">매드무비 & 피드백</h2>
-                <p style="margin-bottom: 50px; color: #aaa; font-size: 1.1rem;">매드무비 제작 및 발로란트 피드백 상담은 아래 채널로 문의 바랍니다.</p>
-                <a href="https://discord.gg/38qepD7At6" target="_blank" rel="noopener noreferrer" class="contact-btn btn-discord"><i class="fa-brands fa-discord" style="font-size: 1.3rem;"></i>Discord Send Message</a>
-                <a href="https://open.kakao.com/o/shw6yWFf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="contact-btn btn-email">
-                    <i class="fa-solid fa-comment"></i>
-                    Kakao Open Chat
-                </a>            </div>
-        </div>
-    </section>
-
-    <script>
-        /* (JS 부분은 위에 따로 분리됨) */
-    </script>
-<script src="app.js"></script>
-
+  <script src="app.js"></script>
 </body>
 </html>
