@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White VALORANT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* =========================================
+           [1] 사이버펑크 글래스 테마
+           ========================================= */
+        :root {
+            --main-bg-gradient: linear-gradient(to bottom, #0f172a, #020617);
+            --secondary-bg: #111827;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(12px);
+            --header-bg: rgba(15, 23, 42, 0.85);
+            --accent-color: #00f2ea;
+            --title-gradient: linear-gradient(to right, #00c6ff, #0072ff, #00f2ea); 
+            --text-main: #ffffff;
+            --text-sub: #9ca3af;
+            --soft-glow: 0 0 20px rgba(0, 242, 234, 0.3);
+            --intense-glow: 0 0 15px var(--accent-color), 0 0 30px rgba(0, 242, 234, 0.5);
+            --content-max-width: 1400px;
+
+            /* 발로란트 테마 컬러 */
+            --valo-red: #ff4655;
+            --valo-dark: #0f1923;
+            --valo-text: #ece8e1;
+        }
+
+        body {
+            background: var(--main-bg-gradient);
+            color: var(--text-main);
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding-top: 90px;
+            overflow-x: hidden;
+            letter-spacing: -0.5px;
+            min-height: 100vh;
+        }
+
+        /* --- 애니메이션 정의 --- */
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes rippleOut { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; border-width: 6px; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; border-width: 1px; } }
+        @keyframes pulseText { 0%, 100% { opacity: 1; text-shadow: var(--intense-glow); } 50% { opacity: 0.8; text-shadow: 0 0 20px var(--accent-color); } }
+        @keyframes expandWidth { from { width: 0; opacity: 0; } to { width: 80px; opacity: 1; } }
+        @keyframes wavePulse { 0% { stroke-opacity: 0.7; filter: drop-shadow(0 0 15px var(--accent-color)); transform: scaleX(0.95); } 100% { stroke-opacity: 1; filter: drop-shadow(0 0 30px var(--accent-color)); transform: scaleX(1.05); } }
+        @keyframes soundBars { 0% { height: 20%; } 50% { height: 100%; } 100% { height: 20%; } }
+
+        /* [중앙 -> 왼쪽 슬라이딩 애니메이션] */
+        @keyframes slideToLeft {
+            0% { 
+                left: 50%; transform: translate(-50%, -50%); 
+                text-align: center; opacity: 0; 
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                left: 0; transform: translate(0, -50%); 
+                text-align: left; 
+                padding-left: max(30px, calc(50vw - var(--content-max-width)/2)); 
+                opacity: 1; 
+            }
+        }
+
+        /* --- 입장 오버레이 --- */
+        #start-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, #1e293b 0%, #000000 90%);
+            z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; cursor: pointer; transition: opacity 0.8s ease-out;
+        }
+        .overlay-icon-box { position: relative; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
+        .overlay-icon-box::before, .overlay-icon-box::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--accent-color); transform: translate(-50%, -50%) scale(0.8); opacity: 0; animation: rippleOut 2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; }
+        .overlay-icon-box::after { animation-delay: 0.6s; }
+        #start-overlay i { font-size: 4rem; color: #fff; z-index: 2; filter: drop-shadow(0 0 15px var(--accent-color)); }
+        #start-overlay h1 { font-size: 4rem; font-weight: 900; letter-spacing: 2px; margin: 0; color: #fff; text-shadow: var(--intense-glow); animation: pulseText 2s infinite alternate; text-align: center; }
+        #start-overlay p { margin-top: 20px; font-size: 1.1rem; color: var(--accent-color); letter-spacing: 1px; opacity: 0.8; }
+
+        /* --- 헤더 --- */
+        header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 90px; 
+            background-color: var(--header-bg); backdrop-filter: var(--glass-blur); border-bottom: var(--glass-border);
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 40px; box-sizing: border-box; z-index: 1000; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; flex: 1; z-index: 1002; }
+        .logo-icon { font-size: 1.6rem; color: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
+        .logo-text { font-size: 1.4rem; font-weight: 800; color: #fff; } .logo-text span { color: var(--accent-color); }
+        .header-center { flex: 2; display: flex; justify-content: center; }
+        .music-player { display: flex; align-items: center; background: var(--glass-bg); backdrop-filter: blur(5px); padding: 8px 25px; border-radius: 50px; gap: 15px; border: var(--glass-border); width: 100%; max-width: 550px; transition: all 0.3s; }
+        .music-player:hover { border-color: rgba(0, 242, 234, 0.4); box-shadow: var(--soft-glow); }
+        
+        .album-art { width: 36px; height: 36px; background: rgba(0,242,234,0.1); border-radius: 50%; display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 8px; box-sizing: border-box; border: 1px solid rgba(0,242,234,0.3); }
+        .wave-bar { width: 3px; background-color: var(--accent-color); border-radius: 2px; animation: soundBars 1s ease-in-out infinite; }
+        .wave-bar:nth-child(1) { height: 40%; animation-delay: 0.0s; }
+        .wave-bar:nth-child(2) { height: 80%; animation-delay: 0.2s; }
+        .wave-bar:nth-child(3) { height: 50%; animation-delay: 0.4s; }
+        .wave-bar:nth-child(4) { height: 30%; animation-delay: 0.1s; }
+        
+        .track-info { display: flex; flex-direction: column; flex: 1; overflow: hidden; min-width: 0; }
+        .track-title { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-controls { display: flex; align-items: center; gap: 12px; font-size: 0.75rem; color: var(--text-sub); }
+        .play-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 0.9rem; transition: color 0.3s; }
+        .progress-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); transition: width 0.1s linear; }
+        .volume-control { display: flex; align-items: center; gap: 8px; margin-left: 15px; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 15px; }
+        .volume-slider { -webkit-appearance: none; width: 70px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; cursor: pointer; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #fff; border-radius: 50%; cursor: pointer; transition: 0.3s; box-shadow: 0 0 5px var(--accent-color); }
+        .volume-slider::-webkit-slider-thumb:hover { background: var(--accent-color); transform: scale(1.2); }
+        .header-right { flex: 1; display: flex; justify-content: flex-end; }
+        .nav-menu { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
+        .nav-menu li a { text-decoration: none; color: var(--text-sub); font-size: 0.95rem; font-weight: 500; transition: all 0.3s; cursor: pointer; position: relative; }
+        .nav-menu li a:hover, .nav-menu li a.active { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .nav-menu li a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent-color); transition: width 0.3s; box-shadow: 0 0 10px var(--accent-color); }
+        .nav-menu li a.active::after { width: 100%; }
+        .mobile-menu-btn { display: none; font-size: 1.5rem; color: #fff; cursor: pointer; z-index: 1002; }
+
+        /* 페이지 섹션 공통 */
+        .page-section { display: none; padding: 80px 30px; animation: slideIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; }
+        .page-section.active { display: block; }
+        .section-content { max-width: var(--content-max-width); margin: 0 auto; position: relative; z-index: 2; }
+
+        /* 섹션 제목 */
+        .section-header { text-align: center; margin-bottom: 60px; animation: fadeInUp 0.8s ease-out backwards; }
+        .section-title-styled { font-size: 2.5rem; font-weight: 800; color: #fff; margin: 0 0 15px 0; position: relative; display: inline-block; letter-spacing: 1px; }
+        .gradient-text { background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(0, 198, 255, 0.5)); }
+        .section-title-styled::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--title-gradient); border-radius: 2px; box-shadow: 0 0 15px rgba(0, 198, 255, 0.6); animation: expandWidth 0.8s ease-out 0.3s backwards; }
+        .section-subtitle { font-size: 1rem; color: var(--text-sub); margin: 0; animation: fadeInUp 0.8s ease-out 0.5s backwards; }
+        .section-notice { font-size: 0.95rem; color: #888; margin-top: 15px; font-weight: 400; animation: fadeInUp 0.8s ease-out 0.6s backwards; }
+
+        #about, #contact, #feedback {
+            background-color: var(--secondary-bg);
+            background-image: radial-gradient(rgba(0, 242, 234, 0.07) 1px, transparent 1px), radial-gradient(rgba(0, 242, 234, 0.07) 1px, transparent 1px);
+            background-size: 40px 40px; background-position: 0 0, 20px 20px;
+            box-shadow: inset 0 2px 15px -5px rgba(0,242,234,0.3), inset 0 -2px 15px -5px rgba(0,242,234,0.3);
+            border-top: 1px solid rgba(0, 242, 234, 0.1); border-bottom: 1px solid rgba(0, 242, 234, 0.1);
+        }
+        #home, #project { padding: 0; }
+        #project { padding-top: 80px; padding-bottom: 80px; }
+
+        /* --- HOME (유튜브 영상 배경) --- */
+        .hero-video-container { position: relative; width: 100%; height: 75vh; min-height: 500px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        /* [수정] 유튜브 배경 스타일 */
+        .video-background {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: -2;
+            pointer-events: none; /* 클릭 방지 */
+        }
+        .video-background iframe {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 100vw; height: 56.25vw; /* 16:9 비율 */
+            min-height: 100vh; min-width: 177.77vh; /* 화면 꽉 채우기 */
+            transform: translate(-50%, -50%) scale(1.3); /* 로고/UI 가리기 위해 확대 */
+            opacity: 0.8;
+        }
+
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%); z-index: -1; }
+        
+        .hero-content { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            text-align: center; z-index: 1; width: 100%; max-width: var(--content-max-width); padding: 0 30px; 
+            opacity: 0; visibility: hidden; 
+        }
+        .hero-content.animate { visibility: visible; animation: slideToLeft 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; }
+
+        .hero-title { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .hero-subtitle { font-size: 1.5rem; font-weight: 600; color: #ccc; margin-bottom: 20px; text-shadow: 0 1px 5px rgba(0,0,0,0.5); }
+        
+        .hero-sub-text { color: var(--accent-color); font-size: 1.1rem; font-weight: 600; margin-bottom: 35px; text-shadow: 0 0 10px rgba(0, 242, 234, 0.4); }
+
+        .hero-donation {
+            display: inline-flex; align-items: center; gap: 10px;
+            margin-bottom: 40px; padding: 12px 25px; 
+            background: rgba(0, 242, 234, 0.08); 
+            border: 1px solid rgba(0, 242, 234, 0.2);
+            border-radius: 50px; backdrop-filter: blur(5px);
+            color: #ddd; font-size: 1.05rem; line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; max-width: 100%;
+        }
+        .hero-donation:hover { transform: translateY(-2px); border-color: rgba(0, 242, 234, 0.4); }
+        .hero-donation i { color: var(--accent-color); font-size: 1.2rem; }
+        .donation-highlight { color: #fff; font-weight: 700; }
+        .donation-accent { color: var(--accent-color); font-weight: 700; }
+
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .hero-content.animate .hero-buttons { justify-content: flex-start; } 
+        .hero-content.animate .hero-donation { margin-right: auto; } 
+        .hero-content.animate .hero-sub-text { text-align: left; }
+
+        .btn-primary { padding: 15px 35px; background-color: var(--accent-color); color: #000; font-weight: 800; font-size: 1.1rem; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(0, 242, 234, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 30px var(--accent-color); color: #fff; }
+        .btn-glass { padding: 15px 35px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); color: #fff; font-weight: 800; font-size: 1.1rem; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .btn-glass:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; transform: translateY(-3px); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .btn-outline { padding: 15px 35px; background-color: transparent; color: #fff; font-weight: 800; font-size: 1.1rem; border: 2px solid #fff; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .btn-outline:hover { background-color: rgba(255,255,255,0.1); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 242, 234, 0.2); transform: translateY(-3px); }
+
+        .section-divider { display: flex; justify-content: center; height: 180px; margin-top: -90px; margin-bottom: 30px; position: relative; z-index: 5; opacity: 0; animation: fadeInUp 1s ease-out forwards 1.8s; pointer-events: none; }
+        .wave-svg { height: 100%; width: auto; filter: drop-shadow(0 0 15px var(--accent-color)); }
+        .wave-svg path { animation: wavePulse 3s ease-in-out infinite alternate; transform-origin: center; }
+
+        .home-intro-section { display: flex; align-items: stretch; gap: 50px; background: rgba(10, 15, 30, 0.6); backdrop-filter: blur(15px); padding: 50px; border-radius: 16px; border: 1px solid rgba(0, 242, 234, 0.15); margin: 0 auto 100px auto; max-width: 1200px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.4); position: relative; overflow: hidden; animation: fadeInUp 0.8s ease-out backwards; animation-delay: 0.5s; }
+        .home-intro-section::before { content:''; position: absolute; left: 0; top: 20px; bottom: 20px; width: 4px; background: var(--title-gradient); border-radius: 0 4px 4px 0; box-shadow: 0 0 15px var(--accent-color); }
+        .intro-img { flex: 1; height: auto; min-height: 350px; position: relative; overflow: hidden; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); border: 1px solid rgba(0,242,234,0.3); }
+        .intro-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .intro-img:hover img { transform: scale(1.1); }
+        .intro-img::after { content:''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,242,234,0.2) 0%, transparent 100%); pointer-events: none; }
+        .intro-text { flex: 1.2; text-align: left; display: flex; flex-direction: column; justify-content: center; }
+        .intro-text h2 { font-size: 2.6rem; font-weight: 800; margin-bottom: 25px; line-height: 1.2; color: #fff; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .intro-text p { color: #ccc; font-size: 1.05rem; line-height: 1.7; margin-bottom: 20px; word-break: keep-all; }
+        .intro-highlight { color: var(--accent-color); font-weight: 700; text-shadow: 0 0 10px rgba(0,242,234,0.4); }
+        .intro-btn { align-self: flex-start; padding: 14px 35px; background: transparent; color: var(--accent-color); font-weight: 700; font-size: 1rem; letter-spacing: 1px; border: 1px solid var(--accent-color); border-radius: 4px; cursor: pointer; transition: all 0.3s; margin-top: 15px; position: relative; overflow: hidden; box-shadow: 0 0 10px rgba(0,242,234,0.1); }
+        .intro-btn:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 20px var(--accent-color); }
+
+        .features-container { text-align: center; padding: 80px 0; background: var(--main-bg-gradient); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+        .feature-item { background: var(--glass-bg); backdrop-filter: blur(10px); padding: 40px 30px; border-radius: 24px; border: var(--glass-border); transition: all 0.3s; animation: fadeInUp 0.6s ease-out backwards; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3); }
+        .feature-item:hover { transform: translateY(-10px); border-color: var(--accent-color); box-shadow: var(--soft-glow); }
+        .feature-icon { font-size: 2.8rem; color: var(--accent-color); margin-bottom: 25px; filter: drop-shadow(0 0 10px var(--accent-color)); }
+        .feature-item h3 { font-size: 1.4rem; margin-bottom: 15px; color: #fff; font-weight: 700; }
+        .feature-item p { font-size: 1rem; color: #bbb; line-height: 1.7; word-break: keep-all; }
+        .feature-item:nth-child(1) { animation-delay: 0.2s; } .feature-item:nth-child(2) { animation-delay: 0.4s; } .feature-item:nth-child(3) { animation-delay: 0.6s; } .feature-item:nth-child(4) { animation-delay: 0.8s; }
+
+        /* ABOUT */
+        .profile-box { background: var(--glass-bg); backdrop-filter: var(--glass-blur); padding: 60px; border-radius: 30px; border: var(--glass-border); text-align: center; max-width: 800px; margin: 0 auto 80px auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); }
+        .profile-img { width: 150px; height: 150px; border-radius: 50%; background: rgba(0,242,234,0.05); margin: 0 auto 35px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: var(--accent-color); border: 2px solid rgba(0, 242, 234, 0.4); box-shadow: var(--soft-glow); }
+        .about-feature { margin-top: 80px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); padding: 60px; border-radius: 30px; border: var(--glass-border); max-width: 900px; margin: 0 auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); }
+        .about-feature h2 { font-size: 2rem; margin-bottom: 40px; color: #fff; text-align: center; text-shadow: 0 0 10px rgba(0,242,234,0.3); }
+        .about-desc { margin-bottom: 50px; padding: 30px; background: rgba(0,0,0,0.2); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .about-desc p { color: #ddd; font-size: 1.05rem; line-height: 1.9; margin-bottom: 15px; } .about-desc p::before { content: '✦ '; color: var(--accent-color); margin-right: 8px; }
+        .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-top: 40px; }
+        .compare-item { background: #000; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,242,234,0.2); transition: 0.3s; position: relative; }
+        .compare-item:hover { border-color: var(--accent-color); box-shadow: var(--soft-glow); transform: translateY(-5px); }
+        .compare-label { padding: 15px; background: linear-gradient(to right, #111, #1a1a1a); font-weight: 700; color: var(--accent-color); font-size: 1rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); letter-spacing: 1px; }
+
+        /* FEEDBACK - 발로란트 테마 */
+        #feedback { background-color: var(--valo-dark); background-image: linear-gradient(rgba(255, 70, 85, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 70, 85, 0.05) 1px, transparent 1px); background-size: 50px 50px; border-top: 1px solid var(--valo-red); border-bottom: 1px solid var(--valo-red); }
+        .feedback-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: flex-start; }
+        .feedback-card { flex: 1 1 300px; max-width: 400px; background: #1f2731; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); padding: 40px; text-align: center; position: relative; transition: all 0.3s; animation: fadeInUp 0.6s ease-out backwards; }
+        .feedback-card::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--valo-red); transition: 0.3s; }
+        .feedback-card:nth-child(1) { animation-delay: 0.2s; } .feedback-card:nth-child(2) { animation-delay: 0.4s; } .feedback-card:nth-child(3) { animation-delay: 0.6s; }
+        .feedback-card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(255, 70, 85, 0.15); background: #2a3540; }
+        .feedback-icon-box { width: 70px; height: 70px; margin: 0 auto 25px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); transform: skew(-10deg); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--valo-text); transition: 0.3s; }
+        .feedback-card:hover .feedback-icon-box { background: var(--valo-red); color: #fff; border-color: var(--valo-red); }
+        .feedback-icon-box i { transform: skew(10deg); }
+        .feedback-title { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .feedback-desc { color: #b0b0b0; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; min-height: 60px; }
+        .price-tag { display: inline-block; padding: 12px 30px; background: transparent; color: var(--valo-text); font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .price-tag::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--valo-red); transition: 0.3s; z-index: -1; transform: skewX(-20deg); }
+        .feedback-card:hover .price-tag { border-color: var(--valo-red); color: #fff; }
+        .feedback-card:hover .price-tag::before { left: 0; }
+
+        /* 모달 스타일 (공통) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        .modal.open { display: flex; opacity: 1; }
+        .modal-box { background-color: var(--valo-dark); border: 1px solid var(--valo-red); border-left: 5px solid var(--valo-red); padding: 40px; width: 90%; max-width: 600px; box-shadow: 0 0 50px rgba(255, 70, 85, 0.2); position: relative; transform: translateY(20px); transition: transform 0.3s; }
+        .modal.open .modal-box { transform: translateY(0); }
+        .modal-header h2 { color: var(--valo-red); font-size: 1.8rem; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .modal-body { color: var(--valo-text); font-size: 1rem; line-height: 1.6; text-align: left; }
+        .modal-body ul { list-style: none; padding: 0; margin-bottom: 25px; }
+        .modal-body li { padding-left: 20px; position: relative; margin-bottom: 10px; }
+        .modal-body li::before { content: '■'; color: var(--valo-red); font-size: 0.8rem; position: absolute; left: 0; top: 2px; }
+        .modal-highlight { color: #fff; font-weight: 700; background: rgba(255, 70, 85, 0.1); padding: 2px 5px; }
+        .modal-close-btn { background: var(--valo-red); color: #fff; border: none; padding: 12px 30px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; float: right; transition: 0.2s; }
+        .modal-close-btn:hover { background: #d93644; }
+
+        /* PROJECT & CONTACT */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        .video-card { background: var(--glass-bg); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: var(--glass-border); transition: all 0.3s; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3); }
+        .video-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent-color); box-shadow: 0 20px 40px -10px rgba(0, 242, 234, 0.3); z-index: 2; }
+        .video-thumbnail { display: block; position: relative; width: 100%; padding-bottom: 56.25%; overflow: hidden; background: #000; }
+        .video-thumbnail img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; opacity: 0.8; }
+        .video-card:hover .video-thumbnail img { transform: scale(1.1); opacity: 1; }
+        .play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(0, 242, 234, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-color); transition: all 0.3s; }
+        .play-icon-overlay i { color: var(--accent-color); font-size: 1.5rem; margin-left: 5px; }
+        .video-card:hover .play-icon-overlay { background: var(--accent-color); transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 20px var(--accent-color); }
+        .video-card:hover .play-icon-overlay i { color: #000; }
+        .video-info { padding: 30px; }
+        .video-info h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: #fff; font-weight: 700; }
+        .video-info p { margin: 0; font-size: 0.95rem; color: var(--text-sub); }
+
+        .contact-box { background: var(--glass-bg); backdrop-filter: var(--glass-blur); padding: 70px; border-radius: 30px; border: var(--glass-border); text-align: center; max-width: 700px; margin: 0 auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); }
+        .contact-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px; margin: 20px 0; border: none; border-radius: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-discord { background-color: #5865F2; } .btn-discord:hover { background-color: #4752c4; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(88, 101, 242, 0.4); }
+        .btn-email { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); } .btn-email:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            header { padding: 0 20px; height: 70px; justify-content: space-between; }
+            .header-center { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-menu { 
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
+                background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(20px);
+                flex-direction: column; justify-content: center; gap: 40px;
+                padding: 40px; box-sizing: border-box; transition: 0.4s ease-in-out;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5); border-left: 1px solid rgba(255,255,255,0.1);
+                z-index: 1001;
+            }
+            .nav-menu.active { right: 0; }
+            .nav-menu li a { font-size: 1.2rem; }
+            .mobile-close { display: block !important; }
+            
+            #start-overlay h1 { font-size: 2.5rem; }
+            .page-section { padding: 60px 20px; }
+            .profile-box, .about-feature, .contact-box, .feedback-card { padding: 40px 20px; }
+            .section-title-styled { font-size: 2rem; }
+            .hero-video-container { height: 60vh; min-height: 400px; }
+            .hero-title { font-size: 2.8rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            
+            .hero-content { animation: none; opacity: 1; left: 50%; transform: translate(-50%, -50%); text-align: center; padding-left: 20px; padding-right: 20px; width: 100%; }
+            .hero-buttons { flex-direction: column; gap: 10px; justify-content: center; }
+            .hero-content[style*="text-align: left"] .hero-buttons,
+            .hero-content.animate .hero-buttons { justify-content: center; }
+            
+            .hero-content[style*="text-align: left"] .hero-sub-text,
+            .hero-content.animate .hero-sub-text { text-align: center; }
+
+            .btn-primary, .btn-outline, .btn-glass { width: 100%; text-align: center; }
+            .hero-donation { justify-content: center; text-align: center; width: 100%; box-sizing: border-box; margin-right: 0; }
+            
+            .feedback-grid { justify-content: center; }
+            .section-divider { margin-top: -50px; height: 120px; }
+            
+            .home-intro-section { flex-direction: column; padding: 40px; gap: 30px; }
+            .home-intro-section::before { display: none; }
+            .intro-img { width: 100%; height: 200px; clip-path: none; border-radius: 16px; }
+            .intro-text { text-align: center; }
+            .intro-btn { align-self: center; width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-overlay" onclick="startSite()">
+        <div class="overlay-icon-box"><i class="fa-solid fa-play"></i></div>
+        <h1>WHITE EDIT & FEEDBACK</h1>
+        <p>매드무비 제작 & 랭크 상승 피드백<br>화면을 클릭하여 입장하기</p>
+    </div>
+
+    <audio id="bgm" src="music.mp3" loop></audio>
+
+    <header>
+        <div class="header-left"><i class="fa-solid fa-layer-group logo-icon"></i><div class="logo-text">White <span>EDIT</span></div></div>
+        <div class="header-center">
+            <div class="music-player">
+                <div class="album-art">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+                <div class="track-info">
+                    <div class="track-title">Fall into Place - Highlight BGM</div>
+                    <div class="player-controls">
+                        <button class="play-btn" id="playToggleBtn"><i class="fa-solid fa-play"></i></button>
+                        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                        <span class="time" id="timeDisplay">00:00</span>
+                    </div>
+                </div>
+                <div class="volume-control">
+                    <i class="fa-solid fa-volume-high volume-icon" id="volIcon"></i>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.3">
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li style="align-self: flex-end; display: none;" class="mobile-close">
+                    <i class="fa-solid fa-xmark" style="font-size: 1.5rem; cursor: pointer;" onclick="toggleMenu()"></i>
+                </li>
+                <li><a onclick="showPage('home')" id="link-home" class="active">홈</a></li>
+                <li><a onclick="showPage('about')" id="link-about">소개</a></li>
+                <li><a onclick="showPage('feedback')" id="link-feedback">피드백</a></li>
+                <li><a onclick="showPage('project')" id="link-project">프로젝트</a></li>
+                <li><a onclick="showPage('contact')" id="link-contact">문의</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section id="home" class="page-section active">
+        
+        <div class="hero-video-container">
+            <div class="video-background">
+                <iframe 
+                    src="https://www.youtube.com/embed/PxEkyT4Ncfs?autoplay=1&mute=1&controls=0&loop=1&playlist=PxEkyT4Ncfs&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&playsinline=1&enablejsapi=1"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="hero-overlay"></div>
+            
+            <div class="hero-content animate">
+                <h1 class="hero-title">찾아와주셔서<br>감사합니다.</h1>
+                <p class="hero-subtitle">자신만의 매드무비를 가져보세요!</p>
+                
+                <p class="hero-sub-text">실력 상승을 위한 솔루션, 1:1 피드백은 100% 무료입니다!</p>
+
+                <div class="hero-donation">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                    <span>수익금의 일부는 <span class="donation-highlight">6.25 참전용사분들</span>과 도움이 필요한 이웃에게 <span class="donation-accent">기부</span>됩니다.</span>
+                </div>
+
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="showPage('project')">작업물 보기</button>
+                    <button class="btn-glass" onclick="showPage('feedback')">피드백 받기</button>
+                    <button class="btn-outline" onclick="showPage('contact')">문의하기</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <svg class="wave-svg" viewBox="0 0 100 500" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M50 0C50 0 70 68.5 70 125C70 181.5 30 193.5 30 250C30 306.5 70 318.5 70 375C70 431.5 50 500 50 500" 
+                      stroke="url(#paint0_linear)" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+                <defs>
+                    <linearGradient id="paint0_linear" x1="50" y1="0" x2="50" y2="500" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00F2EA" stop-opacity="0"/>
+                        <stop offset="0.5" stop-color="#00F2EA"/>
+                        <stop offset="1" stop-color="#00F2EA" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+
+        <div class="section-content">
+            <div class="home-intro-section">
+                <div class="intro-img">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop" alt="매드무비 작업 이미지">
+                </div>
+                <div class="intro-text">
+                    <h2>멋진 매드무비를 작업해<br>드리고 있습니다.</h2>
+                    <p>
+                        매우 저렴한 가격 <strong class="intro-highlight">20,000원</strong>에 작업을 해드리고 있습니다.<br>
+                        어지럽지 않고 깔끔한 매드무비 영상으로 BGM과 어울리게<br>
+                        최선을 다해 작업을 해드리고 있습니다.
+                    </p>
+                    <p style="margin-top: 15px;">
+                        작업한 영상, 기존에 만들었던 영상이 궁금하시면 아래 버튼을<br>
+                        클릭하여서 확인해보시기 바랍니다.
+                    </p>
+                    <p style="color: #888; font-size: 0.9rem; margin-top: 15px;">
+                        * 현재 매드무비 작업 비용 일부를 기부하는 프로젝트를 진행하고 있습니다.<br>
+                        <span style="color:var(--accent-color)">6.25 참전용사분들</span>과 도움이 필요한 이웃에게 기부됩니다.
+                    </p>
+                    <button class="intro-btn" onclick="showPage('project')">소개 자세히 보기</button>
+                </div>
+            </div>
+
+            <div class="features-container">
+                <div class="section-header">
+                    <h2 class="section-title-styled">믿을 수 있는 <span class="gradient-text">작업</span></h2>
+                    <p class="section-subtitle">합리적인 가격과 최고의 퀄리티를 약속합니다.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-item"><i class="fa-solid fa-coins feature-icon"></i><h3>합리적인 비용</h3><p>비용을 오버해서 받지 않습니다.<br>작업 시간과 양에 따라 정직하게 받습니다.</p></div>
+                    <div class="feature-item"><i class="fa-solid fa-comments feature-icon"></i><h3>간편 상담 상시 가능</h3><p>언제든지 연락주세요.<br>새벽 시간에는 답변이 조금 늦을 수 있습니다.</p></div>
+                    <div class="feature-item"><i class="fa-solid fa-ban feature-icon"></i><h3>추가 비용 X</h3><p>작업 도중 부당한 추가 비용을 요구하지 않습니다.<br>사전에 정확한 가격으로 진행합니다.</p></div>
+                    <div class="feature-item"><i class="fa-solid fa-bolt feature-icon"></i><h3>빠른 작업</h3><p>빠른 시일 내에 작업을 완료하여<br>퀄리티 있는 영상을 보내드립니다.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-styled">About <span class="gradient-text">Editor</span></h2>
+                <p class="section-subtitle">감각적인 편집으로 당신의 플레이를 빛내드립니다.</p>
+            </div>
+            <div class="profile-box">
+                <div class="profile-img"><i class="fa-solid fa-user-astronaut"></i></div>
+                <h2 style="margin-bottom:10px; color:#fff;">White</h2>
+                <p style="color:var(--accent-color); font-weight:bold; margin-bottom:30px; letter-spacing: 1px;">Professional Video Editor</p>
+                <p style="color:#ccc; line-height: 1.8; font-size: 1.1rem;">안녕하세요. 감각적인 컷 편집을 추구하는 <strong>White</strong>입니다.<br>브금에 맞게 그에 맞는 효과를 넣어 게임플레이가 더욱 돋보이게 만듭니다.<br>Adobe Premiere Pro를 주로 사용합니다.</p>
+            </div>
+            <div class="about-feature">
+                <h2>밋밋한 영상을 더 화려하게</h2>
+                <div class="about-desc">
+                    <p>과하지 않게 편집하여 보는 사람도 눈이 아프지 않고 편하게 볼 수 있도록 해드립니다.</p>
+                    <p>BGM에 맞게 최선을 다해 작업을 해드리며, 하이라이트에는 상황에 맞게 추가적인 효과음을 넣어 강조시킵니다.</p>
+                    <p>또한 과하지 않고 어색하지 않는 킬 효과와 화면전환을 넣어 자연스럽게 볼 수 있도록 합니다.</p>
+                </div>
+                <div class="compare-grid">
+                    <div class="compare-item">
+                        <a href="https://www.youtube.com/watch?v=FXEghQiNnmQ" target="_blank" class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/FXEghQiNnmQ/hqdefault.jpg" alt="썸네일">
+                            <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="compare-label">편집 예시 영상 1</div>
+                    </div>
+                    <div class="compare-item">
+                        <a href="https://www.youtube.com/watch?v=HT1PUiN0uQc" target="_blank" class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/HT1PUiN0uQc/hqdefault.jpg" alt="썸네일">
+                            <div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="compare-label">편집 예시 영상 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="feedback" class="page-section">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-styled">Gameplay <span class="gradient-text">Feedback</span></h2>
+                <p class="section-subtitle">티어를 올리는 가장 확실한 방법, 1:1 맞춤형 솔루션</p>
+                <p class="section-notice">모든 저의 피드백이 맞을 수 있고 다른 의견으로 아닐 수 있습니다.<br>이 점 반드시 참고해주시기 바랍니다.</p>
+            </div>
+
+            <div class="feedback-grid">
+                <div class="feedback-card">
+                    <div class="feedback-icon-box"><i class="fa-solid fa-video"></i></div>
+                    <h3 class="feedback-title">VOD 피드백</h3>
+                    <p class="feedback-desc">녹화된 플레이 영상을 정밀 분석하여<br>습관적인 실수와 개선점을 찾아드립니다.</p>
+                    <div class="price-tag" onclick="openModal()">상세 문의</div>
+                </div>
+                <div class="feedback-card">
+                    <div class="feedback-icon-box"><i class="fa-solid fa-headset"></i></div>
+                    <h3 class="feedback-title">실시간 코칭</h3>
+                    <p class="feedback-desc">디스코드 라이브를 통해 실시간으로<br>상황 판단과 오더 능력을 키워드립니다.</p>
+                    <div class="price-tag" onclick="openModal()">상세 문의</div>
+                </div>
+                <div class="feedback-card">
+                    <div class="feedback-icon-box"><i class="fa-solid fa-crosshairs"></i></div>
+                    <h3 class="feedback-title">에임 & 셋업</h3>
+                    <p class="feedback-desc">요원별 스킬 활용법과 에임 루틴,<br>감도 설정 등 기초부터 탄탄하게.</p>
+                    <div class="price-tag" onclick="openModal()">상세 문의</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="color: #ccc; margin-bottom: 20px;">* 피드백은 현재 티어와 주 사용 요원을 기반으로 진행됩니다.</p>
+                <button class="btn-primary" onclick="openModal()">피드백 신청하기</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="feedback-modal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>피드백 준비 안내</h2>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom:15px; font-weight:bold;">피드백을 위한 준비물이 있으십니다.</p>
+                <ul>
+                    <li>본인 <span class="modal-highlight">랭크게임 플레이 2판</span>을 준비하셔야 합니다.</li>
+                </ul>
+                
+                <p style="margin-top:25px; margin-bottom:15px; font-weight:bold; color:var(--valo-red);">피드백이 불가능한 조건</p>
+                <ul>
+                    <li>소리가 재생되지 않음.</li>
+                    <li>화질이 보기 힘들 정도로 안 좋거나 끊김이 있음.</li>
+                    <li>13 대 0 / 13대 3 식으로 라운드를 너무 쉽게 이기는 경우.</li>
+                </ul>
+                
+                <p style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                준비가 다 되셨으면 본인 유튜브 채널에 영상을 
+                <span style="color:var(--accent-color); font-weight:bold;">'일부 공개'</span>로 업로드하신 후, <br>
+                 생성된 <span style="color:var(--accent-color); font-weight:bold;">영상 링크</span>를 복사하여 전달해 주시면 됩니다.
+</p>
+<p style="margin-top: 15px; color: #ccc;">
+    <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord <span style="color:#fff; font-weight:bold;">hyukjin_03</span> 친추 후 링크를 보내주시면 빠른 시일 내에 응답해 드리겠습니다.
+</p>
+            </div>
+            <div style="margin-top:30px; overflow:hidden;">
+                <button class="modal-close-btn" onclick="closeModal()">확인했습니다</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-modal" class="modal">
+        <div class="modal-box" style="text-align: center; max-width: 400px;">
+            <div class="modal-header">
+                <h2>알림</h2>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <p id="alert-msg">메시지 내용</p>
+            </div>
+            <div style="margin-top:30px;">
+                <button class="modal-close-btn" onclick="closeAlert()" style="float:none;">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <section id="project" class="page-section">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-styled">Latest <span class="gradient-text">Projects</span></h2>
+                <p class="section-subtitle">(Video gallery will appear here)</p>
+            </div>
+            <div class="video-grid">
+                <div class="video-card"><a href="https://www.youtube.com/watch?v=FXEghQiNnmQ" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/FXEghQiNnmQ/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #1</h3><p>High Quality Montage</p></div></div>
+                <div class="video-card"><a href="https://www.youtube.com/watch?v=HT1PUiN0uQc" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/HT1PUiN0uQc/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #2</h3><p>Gameplay Highlight</p></div></div>
+                <div class="video-card"><a href="https://www.youtube.com/watch?v=PxEkyT4Ncfs" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/PxEkyT4Ncfs/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #3</h3><p>Creative Edit</p></div></div>
+                <div class="video-card"><a href="https://www.youtube.com/watch?v=yT4orJcI3Nk" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/yT4orJcI3Nk/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #4</h3><p>New Highlight 2024</p></div></div>
+                <div class="video-card"><a href="https://www.youtube.com/watch?v=PxEkyT4Ncfs" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/PxEkyT4Ncfs/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #5</h3><p>Special Clip</p></div></div>
+                <div class="video-card"><a href="https://www.youtube.com/watch?v=GQ3Athtgtlw" target="_blank" class="video-thumbnail"><img src="https://img.youtube.com/vi/GQ3Athtgtlw/hqdefault.jpg"><div class="play-icon-overlay"><i class="fa-solid fa-play"></i></div></a><div class="video-info"><h3>프로젝트 영상 #6</h3><p>Best Montage</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="page-section">
+        <div class="section-content">
+            <div class="section-header">
+                <h2 class="section-title-styled">Contact <span class="gradient-text">Me</span></h2>
+                <p class="section-subtitle">작업 문의나 피드백 요청은 언제든 환영합니다.</p>
+            </div>
+
+            <div class="contact-box">
+                <h2 style="margin-bottom:20px; color:#fff;">피드백 및 작업 문의</h2>
+                <p style="margin-bottom: 50px; color: #aaa; font-size: 1.1rem;">언제든지 편하게 연락주시면 빠르게 답변해드리겠습니다.</p>
+                <button class="contact-btn btn-discord" onclick="showAlert('Discord <span style=\'color:#ff4655; font-weight:bold;\'>hyukjin_03</span> 친추 보내주시면<br>빠른시일내에 응답해드리겠습니다.')"><i class="fa-brands fa-discord" style="font-size: 1.3rem;"></i> Discord Send Message</button>
+                <button class="contact-btn btn-email" onclick="showAlert('아직 준비 중 입니다.')"><i class="fa-solid fa-envelope" style="font-size: 1.3rem;"></i> Send Email</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const audio = document.getElementById('bgm');
+        const overlay = document.getElementById('start-overlay');
+        const playBtn = document.getElementById('playToggleBtn');
+        const icon = playBtn.querySelector('i');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volIcon = document.getElementById('volIcon');
+        const navMenu = document.getElementById('navMenu');
+        const modal = document.getElementById('feedback-modal');
+        const alertModal = document.getElementById('alert-modal');
+        const alertMsg = document.getElementById('alert-msg');
+
+        function startSite() {
+            // [핵심 수정] 음악이 성공하든 실패하든, 일단 문은 무조건 엽니다.
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 800);
+
+            // 문 열고 나서 음악 재생 시도 (실패해도 상관없음)
+            audio.volume = 0.3;
+            audio.play().then(() => {
+                icon.classList.remove('fa-play');
+                icon.classList.add('fa-pause');
+            }).catch(error => {
+                console.log("음악 재생 실패 (파일 없음 or 권한 문제):", error);
+            });
+        }
+
+        function toggleMenu() {
+            navMenu.classList.toggle('active');
+        }
+
+        // 피드백 모달 관련
+        function openModal() {
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('open'); }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        // [NEW] 알림 모달 관련
+        function showAlert(msg) {
+            alertMsg.innerHTML = msg;
+            alertModal.style.display = 'flex';
+            setTimeout(() => { alertModal.classList.add('open'); }, 10);
+        }
+
+        function closeAlert() {
+            alertModal.classList.remove('open');
+            setTimeout(() => { alertModal.style.display = 'none'; }, 300);
+        }
+
+        // 모달 배경 클릭 시 닫기 (둘 다 처리)
+        window.onclick = function(event) {
+            if (event.target == modal) { closeModal(); }
+            if (event.target == alertModal) { closeAlert(); }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-menu li a').forEach(link => link.classList.remove('active'));
+            const activeSection = document.getElementById(pageId);
+            activeSection.classList.add('active');
+            document.getElementById('link-' + pageId).classList.add('active');
+            
+            navMenu.classList.remove('active');
+            window.scrollTo(0, 0);
+            
+            activeSection.style.animation = 'none';
+            activeSection.offsetHeight; 
+            activeSection.style.animation = 'slideIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+
+            if(pageId === 'home') {
+                const heroContent = document.querySelector('.hero-content');
+                heroContent.classList.remove('animate'); 
+                void heroContent.offsetWidth; 
+                setTimeout(() => {
+                    heroContent.classList.add('animate');
+                }, 50);
+            }
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) { audio.play(); icon.classList.remove('fa-play'); icon.classList.add('fa-pause'); } 
+            else { audio.pause(); icon.classList.remove('fa-pause'); icon.classList.add('fa-play'); }
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            if(audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+                let currentMin = Math.floor(audio.currentTime / 60);
+                let currentSec = Math.floor(audio.currentTime % 60);
+                if(currentSec < 10) currentSec = "0" + currentSec;
+                timeDisplay.innerText = currentMin + ":" + currentSec;
+            }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+            if(audio.volume === 0) volIcon.className = "fa-solid fa-volume-xmark volume-icon";
+            else if (audio.volume < 0.5) volIcon.className = "fa-solid fa-volume-low volume-icon";
+            else volIcon.className = "fa-solid fa-volume-high volume-icon";
+        });
+    </script>
+</body>
+</html>
